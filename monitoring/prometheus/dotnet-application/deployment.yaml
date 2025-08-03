@@ -14,6 +14,12 @@ spec:
       labels:
         app: dotnet-application
     spec:
+      initContainers:
+      - name: set-sysctl
+        image: busybox
+        command: ["sh", "-c", "echo 524288 > /proc/sys/fs/inotify/max_user_watches; echo 512 > /proc/sys/fs/inotify/max_user_instances"]
+        securityContext:
+          privileged: true
       containers:
       - name: dotnet-application
         image: dotnet-application:latest

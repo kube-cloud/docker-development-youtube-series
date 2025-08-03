@@ -5,7 +5,7 @@
 In this guide we we''ll need a Kubernetes cluster for testing. Let's create one using [kind](https://kind.sigs.k8s.io/) </br>
 
 ```
-kind create cluster --name fluxcd --image kindest/node:v1.26.3
+kind create cluster --name fluxcd --image kindest/node:v1.33.2
 ```
 
 ## Run a container to work in
@@ -43,10 +43,15 @@ We can get this utility from the GitHub [Releases page](https://github.com/fluxc
 It's also worth noting that you want to ensure you get a compatible version of flux which supports your version of Kubernetes. Checkout the [prerequisites](https://fluxcd.io/flux/installation/#prerequisites) page. </br>
 
 ```
-curl -o /tmp/flux.tar.gz -sLO https://github.com/fluxcd/flux2/releases/download/v2.1.1/flux_2.1.1_linux_amd64.tar.gz
+FLUX_VERSION=2.6.4
+curl -o /tmp/flux.tar.gz -sLO https://github.com/fluxcd/flux2/releases/download/v${FLUX_VERSION}/flux_${FLUX_VERSION}_linux_amd64.tar.gz
 tar -C /tmp/ -zxvf /tmp/flux.tar.gz
-mv /tmp/flux /usr/local/bin/flux
-chmod +x /usr/local/bin/flux
+sudo chmod +x /tmp/flux
+sudo mv /tmp/flux /usr/local/bin/flux
+
+# Flux Bash Completion every session (in .bashrc or .bash_profile or else)
+# https://fluxcd.io/flux/cmd/flux_completion_bash/
+command -v flux >/dev/null && . <(flux completion bash)
 ```
 
 Now we can run `flux --help` to see its installed
@@ -77,12 +82,12 @@ Then we can bootstrap it using the GitHub bootstrap method
 ```
 flux bootstrap github \
   --token-auth \
-  --owner=marcel-dempers \
+  --personal \
+  --owner=kube-cloud \
   --repository=docker-development-youtube-series \
   --path=kubernetes/fluxcd/repositories/infra-repo/clusters/dev-cluster \
-  --personal \
-  --branch fluxcd-2022
-
+  --branch training-2025-08
+  
 flux check
 
 # flux manages itself using GitOps objects:
