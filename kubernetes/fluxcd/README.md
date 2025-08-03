@@ -48,6 +48,10 @@ curl -o /tmp/flux.tar.gz -sLO https://github.com/fluxcd/flux2/releases/download/
 tar -C /tmp/ -zxvf /tmp/flux.tar.gz
 sudo chmod +x /tmp/flux
 sudo mv /tmp/flux /usr/local/bin/flux
+
+# Flux Bash Completion every session (in .bashrc or .bash_profile or else)
+# https://fluxcd.io/flux/cmd/flux_completion_bash/
+command -v flux >/dev/null && . <(flux completion bash)
 ```
 
 Now we can run `flux --help` to see its installed
@@ -78,12 +82,12 @@ Then we can bootstrap it using the GitHub bootstrap method
 ```
 flux bootstrap github \
   --token-auth \
-  --owner=marcel-dempers \
+  --personal \
+  --owner=kube-cloud \
   --repository=docker-development-youtube-series \
   --path=kubernetes/fluxcd/repositories/infra-repo/clusters/dev-cluster \
-  --personal \
-  --branch fluxcd-2022
-
+  --branch training-2025-08
+  
 flux check
 
 # flux manages itself using GitOps objects:
