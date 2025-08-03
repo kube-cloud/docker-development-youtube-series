@@ -4,9 +4,14 @@ alertmanager:
 grafana:
   enabled: true
   fullnameOverride: "grafana"
+  service:
+    enabled: true
+    #type: "NodePort"
+    #port: 80
+    #nodePort: 30000
   nodeSelector:
     kubernetes.io/os: linux
-  adminPassword: admin  
+  adminPassword: admin
 prometheusOperator:
   fullnameOverride: "prometheus-operator"
   enabled: true
@@ -28,7 +33,7 @@ prometheus:
   prometheusSpec:
     nodeSelector:
       kubernetes.io/os: linux
-    retention: "30d"  
+    retention: "30d"
 prometheus-node-exporter:
   fullnameOverride: "node-exporter"
   prometheus:
